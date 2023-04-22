@@ -19,8 +19,7 @@ def urls():
 # TODO: Redirect page
 @app.route('/<short>')
 def url_redirect(short):
-    url = f"http://127.0.0.1:5000/{short}"
-    return url
+    pass
 
 
 if __name__ == '__main__':
