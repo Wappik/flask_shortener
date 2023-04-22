@@ -21,6 +21,10 @@ def urls():
 def url_redirect(short):
     pass
 
+@app.route("/hi")
+def hi():
+    pass
+
 
 if __name__ == '__main__':
     app.run(debug=True)
