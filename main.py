@@ -31,7 +31,8 @@ def urls():
 # TODO: Redirect page
 @app.route('/<short>')
 def url_redirect(short):
-    pass
+    long_url = get_long_url(short)  # Функция, которая должна возращать длинный урл
+    return redirect(long_url)
 
 @app.route("/hi")
 def hi():
