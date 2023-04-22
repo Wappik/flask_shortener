@@ -16,7 +16,7 @@ def urls():
     # pass
 
 
-# TODO: Redirect page
+# TODO: Redirect page OK
 @app.route('/<short>')
 def url_redirect(short):
     pass
