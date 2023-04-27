@@ -1,9 +1,5 @@
 from flask import Flask, render_template, url_for
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
-from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from datetime import datetime
 
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
@@ -14,6 +10,8 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'SECRET_KEY'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 
 db = SQLAlchemy(app)
 
@@ -45,31 +43,21 @@ def get_short_url():
         else:
             return short
 
-db = SQLAlchemy(app)
-
-class UrlInfo(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    original_url = db.Column(db.String(255), unique=True, nullable=False)
-    short = db.Column(db.String(6), unique=True)
-    visits = db.Column(db.Integer, default=0)
-    created_date = db.Column(db.DateTime, default=datetime.now)
-
-db.create_all()
-db = SQLAlchemy(app)
-
-class UrlInfo(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    original_url = db.Column(db.String(255), unique=True, nullable=False)
-    short = db.Column(db.String(6), unique=True)
-    visits = db.Column(db.Integer, default=0)
-    created_date = db.Column(db.DateTime, default=datetime.now)
-
-db.create_all()
 
 # TODO: Home page
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    form = FromURL()
+    if form.validate_on_submit():
+        # setter for url
+        url = UrlInfo()
+        url.short = get_short_url()
+        url.original_url = form.original_url.data
+        # commit
+        db.session.add(url_for("urls"))
+        db.session.commit()
+        return url_redirect(url_for('urls'))
+    return render_template('index.html', form=form)
 
 
 # TODO: Urls page
