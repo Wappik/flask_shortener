@@ -81,7 +81,7 @@ def urls():
 
 @app.route('/<string:short>', methods=['GET'])
 def url_redirect(short):
-    url = URLmodel.query.filter(URLmodel.short == short).first()
+    url = UrlInfo.query.filter(UrlInfo.short == short).first()
     if url:
         url.visits += 1
         db.session.add(url)
