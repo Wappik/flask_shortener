@@ -3,12 +3,12 @@
     <!-- Контент -->
     <div class="container mt-5">
       <h1 class="text-center mb-4">Укорачиватель ссылок</h1>
-      <form method="POST" action="" novalidate>
+      <form method="POST" action=""> {{ csrf_token }}
         <div class="mb-3">
             <label class="form-label">
                 {{ form.original_url.label }}
             </label>
-            {{ form.original_url(class='form-control', type="url) }}
+            {{ form.original_url(class='form-control', type="url") }}
         </div>
           {%  for error in  form.original_url.errors %}
           <div class="alert-danger" role="alert">

@@ -15,57 +15,25 @@
       </tr>
       </thead>
       <tbody>
+      {% for url in urls %}
       <tr>
-        <th scope="row">1</th>
+        <th scope="row">{{loop.index}}</th>
         <td>
-          <a href="https://i.imgflip.com/44lr3r.jpg">
-            https://i.imgflip.com/44lr3r.jpg
+          <a href="{{url.original_url}}">
+            {{url.original_url|truncate(30)}}
           </a>
         </td>
         <td>
-          <a href="http://127.0.0.1:5000/AcqqVf">
-            http://127.0.0.1:5000/AcqqVf
+          <a href="{{ url_for('url_redirect', short=url.short) }}">
+            {{ url_for('url_redirect', short=url.short) }}
           </a>
         </td>
         <td>
-          04.04.2023 15:00:34
+          {{ url.created_at.strftime('%d.%m.%Y %H:%M:%S') }}
         </td>
-        <td>7</td>
+        <td>{{ url.visits }}</td>
       </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>
-          <a href="https://sun9-69.userapi.com/s/v1/if1/nnWMVTVbO0-ZRlAjM6agS9jmhZEyV3xr9wGrvq0a-8Ep-wg6H2jAoiGux6yBpkkFiiGYXBgI.jpg?size=200x200&amp;quality=96&amp;crop=0,0,2000,2000&amp;ava=1">
-            https://sun9-69.userapi.com...
-          </a>
-        </td>
-        <td>
-          <a href="http://127.0.0.1:5000/HOoOiQ">
-            http://127.0.0.1:5000/HOoOiQ
-          </a>
-        </td>
-        <td>
-          04.04.2023 14:56:51
-        </td>
-        <td>2</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td>
-          <a href="https://youtu.be/dQw4w9WgXcQ">
-            https://youtu.be/dQw4w9WgXcQ
-          </a>
-        </td>
-        <td>
-          <a href="http://127.0.0.1:5000/Gprebb">
-            http://127.0.0.1:5000/Gprebb
-          </a>
-        </td>
-        <td>
-          04.04.2023 14:55:17
-        </td>
-        <td>2</td>
-      </tr>
+      {% endfor %}
       </tbody>
     </table>
   </div>

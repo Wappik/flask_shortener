@@ -24,9 +24,6 @@ class UrlInfo(db.Model):
     created_date = db.Column(db.DateTime, default=datetime.now)
 
 
-db.create_all()
-
-
 class FromURL(FlaskForm):
     original_url = StringField('Url',
                                validators=[DataRequired(message="fill URL!")])
@@ -63,8 +60,8 @@ def index():
 # TODO: Urls page
 @app.route('/urls')
 def urls():
-    return render_template('urls.html')
-    # pass
+    urls = UrlInfo.query.all()
+    return render_template('urls.html', urls=urls)
 
 
 @app.route('/<string:short>', methods=['GET'])
@@ -83,4 +80,7 @@ def hi():
 
 
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
+
     app.run(debug=True)
