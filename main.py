@@ -16,10 +16,14 @@ def urls():
     # pass
 
 
-# TODO: Redirect page
-@app.route('/<short>')
+@app.route('/<string:short>', methods=['GET'])
 def url_redirect(short):
-    pass
+    url = URLmodel.query.filter(URLmodel.short == short).first()
+    if url:
+        url.visits += 1
+        db.session.add(url)
+        db.session.commit()
+        return url_redirect(url.original_url)
 
 
 if __name__ == '__main__':
