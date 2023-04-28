@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, redirect
 from flask_wtf import FlaskForm
 
 from wtforms import StringField, SubmitField
@@ -33,7 +33,7 @@ class FromURL(FlaskForm):
 def get_short_url():
     active = True
     while active is True:
-        short = "".join(random.choices(string.ascii_letters + string.ascii_letters, k=6 ))
+        short = "".join(random.choices(string.ascii_letters + string.ascii_letters, k=6))
 
         if UrlInfo.query.filter(UrlInfo.short == short).first():
             pass
@@ -51,14 +51,14 @@ def index():
         url.short = get_short_url()
         url.original_url = form.original_url.data
         # commit
-        db.session.add(url_for("urls"))
+        db.session.add(url)# добавить в БД объект модели
         db.session.commit()
-        return url_redirect(url_for('urls'))
+        return redirect(url_for('urls')) # редирект на страницу ссылок
     return render_template('index.html', form=form)
 
 
 # TODO: Urls page
-@app.route('/urls')
+@app.route('/urls', methods=['GET'])
 def urls():
     urls = UrlInfo.query.all()
     return render_template('urls.html', urls=urls)
@@ -71,7 +71,7 @@ def url_redirect(short):
         url.visits += 1
         db.session.add(url)
         db.session.commit()
-        return url_redirect(url.original_url)
+    return redirect(url.original_url) # редирект на оригинальную ссылку
 
 
 @app.route("/hi")
