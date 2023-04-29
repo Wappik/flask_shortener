@@ -61,7 +61,7 @@ def index():
 @app.route('/urls')
 def urls():
     urls = UrlInfo.query.all()
-    return render_template('urls.html', urls=urls)
+    return render_template('urls.html', urls=urls[::-1])
 
 
 @app.route('/<string:short>', methods=['GET'])
