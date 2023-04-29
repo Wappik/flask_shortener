@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, redirect
 from flask_wtf import FlaskForm
 
 from wtforms import StringField, SubmitField
@@ -51,9 +51,9 @@ def index():
         url.short = get_short_url()
         url.original_url = form.original_url.data
         # commit
-        db.session.add(url_for("urls"))
+        db.session.add(url)
         db.session.commit()
-        return url_redirect(url_for('urls'))
+        return redirect(url_for('urls'))
     return render_template('index.html', form=form)
 
 
@@ -71,16 +71,10 @@ def url_redirect(short):
         url.visits += 1
         db.session.add(url)
         db.session.commit()
-        return url_redirect(url.original_url)
-
-
-@app.route("/hi")
-def hi():
-    pass
+        return redirect(url.original_url)
 
 
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-
     app.run(debug=True)
